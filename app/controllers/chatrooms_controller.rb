@@ -7,7 +7,6 @@ class ChatroomsController < ApplicationController
       @post = Post.find(params[:post_id])
       @post.destory
     end
-    redirect_to posts_url if @chatroom.nil?
     # if @chatroom.visited
     #  redirect_to destory(@chatroom)
     # else
@@ -53,6 +52,7 @@ class ChatroomsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_chatroom
+      redirect_to posts_url unless Chatroom.exists? params[:id].to_i
       @chatroom = Chatroom.find(params[:id])
     end
 
