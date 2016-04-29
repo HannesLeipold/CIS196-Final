@@ -38,7 +38,7 @@ class ChatroomsController < ApplicationController
   def join
     @chatroom = Chatroom.where(:user_id => params[:user_id].to_i).where(:guest_id => params[:guest_id].to_i)
     @post = Post.find(params[:post_id].to_i)
-    @post.destory
+    @post.delete
     params.merge(:id => @chatroom.id)
     redirect_to @chatroom
   end
@@ -52,7 +52,7 @@ class ChatroomsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_chatroom
-      redirect_to posts_url unless Chatroom.exists? params[:id].to_i
+      # redirect_to posts_url unless Chatroom.exists? params[:id].to_i
       @chatroom = Chatroom.find(params[:id])
     end
 
