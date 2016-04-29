@@ -24,7 +24,7 @@
         <td><%= link_to 'Show', post %></td>
         <% if logged_in? && post.has_session? && post.user_id == current_user.id %>
           <%= hidden_field_tag 'guest_id', current_user.id %>
-          <td><%= button_to 'Join', { :controller => 'chatrooms', :action => 'join', :post_id => post.id}, :exists => true, :duration => post.period, :post_user => post.user_id,:user_id => current_user.id, method: :delete %><td>
+          <td><%= button_to 'Join', { :controller => 'chatrooms', :action => 'join', :post_id => post.id}, :exists => true, :duration => post.period, :post_user => post.user_id,:user_id => current_user.id, method: :get %><td>
         <% end %>  
         <% if logged_in? && post.user_id != current_user.id && !post.has_session? %>
           <%= hidden_field_tag 'guest_id', current_user.id %>

@@ -20,7 +20,7 @@ Rails.application.routes.draw do
   post '/groups/:group_id/users/:user_id' => 'groups#delete_user'
   delete '/groups/:group.id/users' => 'groups#delete_user'
 
-  delete '/chatrooms/:post_id' => 'chatrooms#join'
+  get '/chatrooms/:post_id' => 'chatrooms#join'
   post '/chatrooms/:id' => 'chatrooms#destroy'
 
   get '/login' => 'sessions#new'
