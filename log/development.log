@@ -39865,3 +39865,500 @@ WHERE c.contype = 'f'
   AND t3.nspname = ANY (current_schemas(false))
 ORDER BY c.conname
 
+
+
+Started GET "/posts" for 127.0.0.1 at 2016-04-29 12:08:11 -0400
+  [1m[36mActiveRecord::SchemaMigration Load (0.4ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Processing by PostsController#index as HTML
+  [1m[35mPost Load (0.6ms)[0m  SELECT "posts".* FROM "posts"
+  Rendered posts/index.html.erb within layouts/application (18.4ms)
+  Rendered layouts/_nav.html.erb (0.5ms)
+Completed 200 OK in 492ms (Views: 481.9ms | ActiveRecord: 3.9ms)
+
+
+Started GET "/users/new" for 127.0.0.1 at 2016-04-29 12:08:17 -0400
+Processing by UsersController#new as HTML
+  Rendered users/_form.html.erb (65.8ms)
+  Rendered users/new.html.erb within layouts/application (67.3ms)
+  Rendered layouts/_nav.html.erb (0.1ms)
+Completed 200 OK in 227ms (Views: 194.4ms | ActiveRecord: 2.7ms)
+
+
+Started POST "/users" for 127.0.0.1 at 2016-04-29 12:08:28 -0400
+Processing by UsersController#create as HTML
+  Parameters: {"utf8"=>"✓", "authenticity_token"=>"hmmCHUYfefGYPAX0rgTID0E/Llzth8UZElggv0mWgGxb8UOuR9xAN9fTOvjB7+9vf7v5sYAVR/enZiYbb6OD+A==", "user"=>{"name"=>"Hannes", "email"=>"leipoldh@sas.upenn.edu", "password"=>"[FILTERED]", "info"=>""}, "commit"=>"Create User"}
+  [1m[36m (0.2ms)[0m  [1mBEGIN[0m
+  [1m[35mUser Exists (1.1ms)[0m  SELECT  1 AS one FROM "users" WHERE "users"."name" = 'Hannes' LIMIT 1
+  [1m[36mSQL (0.4ms)[0m  [1mINSERT INTO "users" ("name", "email", "password_hash", "info", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6) RETURNING "id"[0m  [["name", "Hannes"], ["email", "leipoldh@sas.upenn.edu"], ["password_hash", "$2a$10$iuTXQo0FdlHc4Es9sLNVnOnSjCgJfcc1J3Wp80zFCxN2HCmU6TJsK"], ["info", ""], ["created_at", "2016-04-29 16:08:29.238851"], ["updated_at", "2016-04-29 16:08:29.238851"]]
+  [1m[35m (0.6ms)[0m  COMMIT
+Redirected to http://localhost:3000/users/1
+Completed 302 Found in 245ms (ActiveRecord: 2.4ms)
+
+
+Started GET "/users/1" for 127.0.0.1 at 2016-04-29 12:08:29 -0400
+Processing by UsersController#show as HTML
+  Parameters: {"id"=>"1"}
+  [1m[36mUser Load (0.3ms)[0m  [1mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT 1[0m  [["id", 1]]
+  [1m[35mPost Exists (0.2ms)[0m  SELECT  1 AS one FROM "posts" WHERE "posts"."user_id" = $1 LIMIT 1  [["user_id", 1]]
+  [1m[36mUser Load (0.2ms)[0m  [1mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT 1[0m  [["id", 1]]
+  Rendered users/show.html.erb within layouts/application (11.4ms)
+  Rendered layouts/_nav.html.erb (0.2ms)
+Completed 200 OK in 115ms (Views: 80.3ms | ActiveRecord: 0.7ms)
+
+
+Started GET "/posts/new" for 127.0.0.1 at 2016-04-29 12:08:31 -0400
+Processing by PostsController#new as HTML
+  Rendered posts/_form.html.erb (7.0ms)
+  Rendered posts/new.html.erb within layouts/application (9.9ms)
+  [1m[35mUser Load (0.4ms)[0m  SELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT 1  [["id", 1]]
+  Rendered layouts/_nav.html.erb (1.2ms)
+Completed 200 OK in 75ms (Views: 61.9ms | ActiveRecord: 1.0ms)
+
+
+Started POST "/posts" for 127.0.0.1 at 2016-04-29 12:08:39 -0400
+Processing by PostsController#create as HTML
+  Parameters: {"utf8"=>"✓", "authenticity_token"=>"fa2bquIRSYwvCnAhkxztNh3FhMnWYPTah4AgxxjjYnWgNVoZ49JwSmDlTy3898pWI0FTJLvydjQyviZjPtZh4Q==", "post"=>{"title"=>"Hi", "content"=>"hi", "period"=>"20"}, "commit"=>"Create Post"}
+  [1m[36mUser Load (0.4ms)[0m  [1mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT 1[0m  [["id", 1]]
+  [1m[35mCACHE (0.0ms)[0m  SELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT 1  [["id", 1]]
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.8ms)[0m  INSERT INTO "posts" ("title", "content", "period", "user_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6) RETURNING "id"  [["title", "Hi"], ["content", "hi"], ["period", 20], ["user_id", 1], ["created_at", "2016-04-29 16:08:39.633110"], ["updated_at", "2016-04-29 16:08:39.633110"]]
+  [1m[36m (0.7ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36mSQL (0.4ms)[0m  [1mUPDATE "posts" SET "author" = $1, "updated_at" = $2 WHERE "posts"."id" = $3[0m  [["author", "Hannes"], ["updated_at", "2016-04-29 16:08:39.638936"], ["id", 1]]
+  [1m[35m (0.7ms)[0m  COMMIT
+Redirected to http://localhost:3000/posts/1
+Completed 302 Found in 22ms (ActiveRecord: 3.2ms)
+
+
+Started GET "/posts/1" for 127.0.0.1 at 2016-04-29 12:08:39 -0400
+Processing by PostsController#show as HTML
+  Parameters: {"id"=>"1"}
+  [1m[36mPost Load (0.3ms)[0m  [1mSELECT  "posts".* FROM "posts" WHERE "posts"."id" = $1 LIMIT 1[0m  [["id", 1]]
+  [1m[35mUser Load (0.4ms)[0m  SELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT 1  [["id", 1]]
+  Rendered posts/show.html.erb within layouts/application (3.6ms)
+  [1m[36mCACHE (0.0ms)[0m  [1mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT 1[0m  [["id", 1]]
+  Rendered layouts/_nav.html.erb (2.0ms)
+Completed 200 OK in 69ms (Views: 65.6ms | ActiveRecord: 0.8ms)
+
+
+Started GET "/posts" for 127.0.0.1 at 2016-04-29 12:08:41 -0400
+Processing by PostsController#index as HTML
+  [1m[35mPost Load (0.3ms)[0m  SELECT "posts".* FROM "posts"
+  [1m[36mUser Load (0.2ms)[0m  [1mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT 1[0m  [["id", 1]]
+  Rendered posts/index.html.erb within layouts/application (4.8ms)
+  Rendered layouts/_nav.html.erb (0.1ms)
+Completed 200 OK in 61ms (Views: 60.0ms | ActiveRecord: 0.5ms)
+
+
+Started GET "/logout" for 127.0.0.1 at 2016-04-29 12:08:44 -0400
+Processing by SessionsController#destroy as HTML
+Redirected to http://localhost:3000/
+Completed 302 Found in 1ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/" for 127.0.0.1 at 2016-04-29 12:08:44 -0400
+Processing by WelcomeController#index as HTML
+  Rendered welcome/index.html.erb within layouts/application (3.5ms)
+  Rendered layouts/_nav.html.erb (0.1ms)
+Completed 200 OK in 70ms (Views: 69.4ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for 127.0.0.1 at 2016-04-29 12:08:45 -0400
+Processing by SessionsController#new as HTML
+  Rendered sessions/new.html.erb within layouts/application (9.4ms)
+  Rendered layouts/_nav.html.erb (1.0ms)
+Completed 200 OK in 83ms (Views: 82.0ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/users/new" for 127.0.0.1 at 2016-04-29 12:08:51 -0400
+Processing by UsersController#new as HTML
+  Rendered users/_form.html.erb (5.0ms)
+  Rendered users/new.html.erb within layouts/application (6.1ms)
+  Rendered layouts/_nav.html.erb (0.1ms)
+Completed 200 OK in 60ms (Views: 59.3ms | ActiveRecord: 0.0ms)
+
+
+Started POST "/users" for 127.0.0.1 at 2016-04-29 12:09:02 -0400
+Processing by UsersController#create as HTML
+  Parameters: {"utf8"=>"✓", "authenticity_token"=>"0V4EtoQEMivRkE7b+Z8O0Y3soj+ealELWp+y96bqD7tBQHeoj9hc0QbqaHaoHyaprrFZ/IH0SRcTq7UJ+nQgMw==", "user"=>{"name"=>"Matz", "email"=>"matz@matz.edu", "password"=>"[FILTERED]", "info"=>""}, "commit"=>"Create User"}
+  [1m[35m (0.2ms)[0m  BEGIN
+  [1m[36mUser Exists (1.8ms)[0m  [1mSELECT  1 AS one FROM "users" WHERE "users"."name" = 'Matz' LIMIT 1[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "users" ("name", "email", "password_hash", "info", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6) RETURNING "id"  [["name", "Matz"], ["email", "matz@matz.edu"], ["password_hash", "$2a$10$zvKJkqkcsjfBIjyWbA/RaOfxjirU11lVpuGHHAA6DzRHTwE.XIp8i"], ["info", ""], ["created_at", "2016-04-29 16:09:02.319999"], ["updated_at", "2016-04-29 16:09:02.319999"]]
+  [1m[36m (1.2ms)[0m  [1mCOMMIT[0m
+Redirected to http://localhost:3000/users/2
+Completed 302 Found in 221ms (ActiveRecord: 3.5ms)
+
+
+Started GET "/users/2" for 127.0.0.1 at 2016-04-29 12:09:02 -0400
+Processing by UsersController#show as HTML
+  Parameters: {"id"=>"2"}
+  [1m[35mUser Load (0.3ms)[0m  SELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT 1  [["id", 2]]
+  [1m[36mPost Exists (0.3ms)[0m  [1mSELECT  1 AS one FROM "posts" WHERE "posts"."user_id" = $1 LIMIT 1[0m  [["user_id", 2]]
+  [1m[35mUser Load (0.2ms)[0m  SELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT 1  [["id", 2]]
+  Rendered users/show.html.erb within layouts/application (3.0ms)
+  Rendered layouts/_nav.html.erb (0.2ms)
+Completed 200 OK in 73ms (Views: 70.7ms | ActiveRecord: 0.8ms)
+
+
+Started GET "/users" for 127.0.0.1 at 2016-04-29 12:09:04 -0400
+Processing by UsersController#index as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1mSELECT "users".* FROM "users"[0m
+  [1m[35mUser Load (0.4ms)[0m  SELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT 1  [["id", 2]]
+  Rendered users/index.html.erb within layouts/application (7.2ms)
+  Rendered layouts/_nav.html.erb (0.2ms)
+Completed 200 OK in 67ms (Views: 66.4ms | ActiveRecord: 0.5ms)
+
+
+Started GET "/posts" for 127.0.0.1 at 2016-04-29 12:09:07 -0400
+Processing by PostsController#index as HTML
+  [1m[36mPost Load (1.7ms)[0m  [1mSELECT "posts".* FROM "posts"[0m
+  [1m[35mUser Load (2.2ms)[0m  SELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT 1  [["id", 2]]
+  Rendered posts/index.html.erb within layouts/application (14.1ms)
+  Rendered layouts/_nav.html.erb (0.1ms)
+Completed 200 OK in 77ms (Views: 72.9ms | ActiveRecord: 3.9ms)
+
+
+Started GET "/" for 127.0.0.1 at 2016-04-29 12:09:11 -0400
+Processing by WelcomeController#index as HTML
+  Rendered welcome/index.html.erb within layouts/application (0.1ms)
+  Rendered layouts/_nav.html.erb (0.1ms)
+Completed 200 OK in 61ms (Views: 61.1ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/assets/scaffolds.self-9ffe35655cdb1e0e699fb06bf40d8c57ff4cae87ea6a80c8495025425ddb1938.css?body=1" for 127.0.0.1 at 2016-04-29 12:09:11 -0400
+
+
+Started GET "/assets/welcome.self-e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.css?body=1" for 127.0.0.1 at 2016-04-29 12:09:11 -0400
+
+
+Started GET "/assets/groups.self-e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.css?body=1" for 127.0.0.1 at 2016-04-29 12:09:11 -0400
+
+
+Started GET "/assets/sessions.self-e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.css?body=1" for 127.0.0.1 at 2016-04-29 12:09:11 -0400
+
+
+Started GET "/assets/users.self-e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.css?body=1" for 127.0.0.1 at 2016-04-29 12:09:11 -0400
+
+
+Started GET "/assets/jquery.countdown.self-df292ebce9a501b44251f0e6f04e8cb055e15e73a088a8079dc328ffcbb323dc.css?body=1" for 127.0.0.1 at 2016-04-29 12:09:11 -0400
+
+
+Started GET "/assets/bootstrap.self-aca082241e2a525342c62c17194af8473701f3dc15f2e50e2f03ede433fd7301.css?body=1" for 127.0.0.1 at 2016-04-29 12:09:11 -0400
+
+
+Started GET "/assets/bootstrap.min.self-24a9bf4ff4e4b1e2c8dbdc54166f415004be85789fcd7bac2ba04a382176f7a1.css?body=1" for 127.0.0.1 at 2016-04-29 12:09:11 -0400
+
+
+Started GET "/assets/chatrooms.self-e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.css?body=1" for 127.0.0.1 at 2016-04-29 12:09:11 -0400
+
+
+Started GET "/assets/freelancer.self-642d34e654d4a2dbba43d8e4c6fdab3e127a2b149f3678b9be72caaf7bd240b8.css?body=1" for 127.0.0.1 at 2016-04-29 12:09:11 -0400
+
+
+Started GET "/assets/groups_users.self-e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.css?body=1" for 127.0.0.1 at 2016-04-29 12:09:11 -0400
+
+
+Started GET "/assets/posts.self-e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.css?body=1" for 127.0.0.1 at 2016-04-29 12:09:11 -0400
+
+
+Started GET "/assets/statuses.self-e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.css?body=1" for 127.0.0.1 at 2016-04-29 12:09:11 -0400
+
+
+Started GET "/assets/application.self-373a8c46449c8945d5f568717121199071937453b95a71fc07004e7d01dc1f4e.css?body=1" for 127.0.0.1 at 2016-04-29 12:09:11 -0400
+
+
+Started GET "/assets/style.self-d1b5ca8885d0d4ef0f4210fcf8fe0689bd729c4729c6cb7410de30124395f4a0.css?body=1" for 127.0.0.1 at 2016-04-29 12:09:11 -0400
+
+
+Started GET "/assets/jquery.self-660adc51e0224b731d29f575a6f1ec167ba08ad06ed5deca4f1e8654c135bf4c.js?body=1" for 127.0.0.1 at 2016-04-29 12:09:11 -0400
+
+
+Started GET "/assets/jquery_ujs.self-e87806d0cf4489aeb1bb7288016024e8de67fd18db693fe026fe3907581e53cd.js?body=1" for 127.0.0.1 at 2016-04-29 12:09:11 -0400
+
+
+Started GET "/assets/Timer/jquery.countdown.self-1e63d28cf186bd0917f1c210f138128b3a6956a725d9a41c6ee38af558737ec1.js?body=1" for 127.0.0.1 at 2016-04-29 12:09:11 -0400
+
+
+Started GET "/assets/Timer/jquery.countdown.min.self-6add0e5c2783c17b69fc9694b4fca745d7184856f78d24aea312ddcf90fb9d2d.js?body=1" for 127.0.0.1 at 2016-04-29 12:09:11 -0400
+
+
+Started GET "/assets/Timer/jquery.plugin.self-ccdc2f2a7a716655ee0e5604046dec02277fbc59252dbc59067d29582e027e58.js?body=1" for 127.0.0.1 at 2016-04-29 12:09:11 -0400
+
+
+Started GET "/assets/application.self-7862a8a8b42407b4741a1adeeea35f0d13ddc4f702ec532adb0674491d296495.js?body=1" for 127.0.0.1 at 2016-04-29 12:09:11 -0400
+
+
+Started GET "/assets/Timer/simple.self-9117727b02c914f1152354b2bd801b5aebfd2d463fdcbc10f4bfdef51b24a970.js?body=1" for 127.0.0.1 at 2016-04-29 12:09:11 -0400
+
+
+Started GET "/login" for 127.0.0.1 at 2016-04-29 12:09:14 -0400
+Processing by SessionsController#new as HTML
+  Rendered sessions/new.html.erb within layouts/application (4.3ms)
+  Rendered layouts/_nav.html.erb (0.0ms)
+Completed 200 OK in 74ms (Views: 73.6ms | ActiveRecord: 0.0ms)
+
+
+Started POST "/login" for 127.0.0.1 at 2016-04-29 12:09:19 -0400
+Processing by SessionsController#create as HTML
+  Parameters: {"utf8"=>"✓", "authenticity_token"=>"m+eM0BKYUHAh00hoinIrDWLjoyee4hMV6SOl0MT76ST5hAuqhKH7Fo2pRCbLwFPrWtsJw6/QdDQgH5sotJ0u7Q==", "user"=>{"name"=>"Hannes", "password"=>"[FILTERED]"}, "commit"=>"Create User"}
+  [1m[36mUser Load (0.3ms)[0m  [1mSELECT  "users".* FROM "users" WHERE "users"."name" = $1 LIMIT 1[0m  [["name", "Hannes"]]
+Redirected to http://localhost:3000/users/1
+Completed 302 Found in 126ms (ActiveRecord: 0.3ms)
+
+
+Started GET "/users/1" for 127.0.0.1 at 2016-04-29 12:09:19 -0400
+Processing by UsersController#show as HTML
+  Parameters: {"id"=>"1"}
+  [1m[35mUser Load (0.3ms)[0m  SELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT 1  [["id", 1]]
+  [1m[36mPost Exists (0.3ms)[0m  [1mSELECT  1 AS one FROM "posts" WHERE "posts"."user_id" = $1 LIMIT 1[0m  [["user_id", 1]]
+  [1m[35mPost Load (0.0ms)[0m  SELECT "posts".* FROM "posts" WHERE "posts"."user_id" = $1  [["user_id", 1]]
+  [1m[36mUser Load (0.2ms)[0m  [1mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT 1[0m  [["id", 1]]
+  Rendered users/show.html.erb within layouts/application (10.4ms)
+  Rendered layouts/_nav.html.erb (0.2ms)
+Completed 200 OK in 85ms (Views: 82.9ms | ActiveRecord: 0.8ms)
+
+
+Started GET "/posts" for 127.0.0.1 at 2016-04-29 12:09:24 -0400
+Processing by PostsController#index as HTML
+  [1m[35mPost Load (0.3ms)[0m  SELECT "posts".* FROM "posts"
+  [1m[36mUser Load (0.2ms)[0m  [1mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT 1[0m  [["id", 1]]
+  Rendered posts/index.html.erb within layouts/application (3.4ms)
+  Rendered layouts/_nav.html.erb (0.1ms)
+Completed 200 OK in 59ms (Views: 57.8ms | ActiveRecord: 0.5ms)
+
+
+Started POST "/chatrooms?duration=20&exists=true&guest_id=2&method=post&post_id=1&post_user=1" for 127.0.0.1 at 2016-04-29 12:09:27 -0400
+Processing by ChatroomsController#create as HTML
+  Parameters: {"authenticity_token"=>"nGf7oFEm5+UFRpqt3G+1rfZDjSxdxFWUHQNLnfrL/wYMeYi+WvqJH9I8vACN753V1R5270JaTYhUN0xjplXQjg==", "duration"=>"20", "exists"=>"true", "guest_id"=>"2", "method"=>"post", "post_id"=>"1", "post_user"=>"1"}
+  [1m[35mPost Load (0.4ms)[0m  SELECT  "posts".* FROM "posts" WHERE "posts"."id" = $1 LIMIT 1  [["id", 1]]
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.4ms)[0m  UPDATE "posts" SET "guest_id" = $1, "updated_at" = $2 WHERE "posts"."id" = $3  [["guest_id", 2], ["updated_at", "2016-04-29 16:09:27.530730"], ["id", 1]]
+  [1m[36m (0.8ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.3ms)[0m  BEGIN
+  [1m[36mSQL (0.5ms)[0m  [1mINSERT INTO "chatrooms" ("exists", "visited", "duration", "user_id", "guest_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING "id"[0m  [["exists", "t"], ["visited", "f"], ["duration", 40], ["user_id", 1], ["guest_id", 2], ["created_at", "2016-04-29 16:09:27.552300"], ["updated_at", "2016-04-29 16:09:27.552300"]]
+  [1m[35m (0.7ms)[0m  COMMIT
+  [1m[36mChatroom Exists (0.3ms)[0m  [1mSELECT  1 AS one FROM "chatrooms" WHERE "chatrooms"."id" = $1 LIMIT 1[0m  [["id", 0]]
+Redirected to http://localhost:3000/chatrooms/1
+Completed 302 Found in 35ms (ActiveRecord: 9.0ms)
+
+
+Started GET "/chatrooms/1" for 127.0.0.1 at 2016-04-29 12:09:27 -0400
+Processing by ChatroomsController#show as HTML
+  Parameters: {"id"=>"1"}
+  [1m[35mChatroom Load (0.3ms)[0m  SELECT  "chatrooms".* FROM "chatrooms" WHERE "chatrooms"."id" = $1 LIMIT 1  [["id", 1]]
+  [1m[36mUser Load (0.2ms)[0m  [1mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT 1[0m  [["id", 2]]
+  Rendered chatrooms/show.html.erb within layouts/application (54.1ms)
+  Rendered layouts/_nav.html.erb (0.2ms)
+Completed 200 OK in 97ms (Views: 93.8ms | ActiveRecord: 0.5ms)
+
+
+Started GET "/posts" for 127.0.0.1 at 2016-04-29 12:09:31 -0400
+Processing by PostsController#index as HTML
+  [1m[35mPost Load (0.3ms)[0m  SELECT "posts".* FROM "posts"
+  [1m[36mUser Load (0.3ms)[0m  [1mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT 1[0m  [["id", 1]]
+  Rendered posts/index.html.erb within layouts/application (8.4ms)
+  Rendered layouts/_nav.html.erb (0.1ms)
+Completed 200 OK in 80ms (Views: 79.3ms | ActiveRecord: 0.6ms)
+
+
+Started GET "/assets/scaffolds.self-9ffe35655cdb1e0e699fb06bf40d8c57ff4cae87ea6a80c8495025425ddb1938.css?body=1" for 127.0.0.1 at 2016-04-29 12:09:31 -0400
+
+
+Started GET "/assets/groups.self-e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.css?body=1" for 127.0.0.1 at 2016-04-29 12:09:31 -0400
+
+
+Started GET "/assets/sessions.self-e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.css?body=1" for 127.0.0.1 at 2016-04-29 12:09:31 -0400
+
+
+Started GET "/assets/jquery.countdown.self-df292ebce9a501b44251f0e6f04e8cb055e15e73a088a8079dc328ffcbb323dc.css?body=1" for 127.0.0.1 at 2016-04-29 12:09:31 -0400
+
+
+Started GET "/assets/users.self-e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.css?body=1" for 127.0.0.1 at 2016-04-29 12:09:31 -0400
+
+
+Started GET "/assets/welcome.self-e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.css?body=1" for 127.0.0.1 at 2016-04-29 12:09:31 -0400
+
+
+Started GET "/assets/bootstrap.self-aca082241e2a525342c62c17194af8473701f3dc15f2e50e2f03ede433fd7301.css?body=1" for 127.0.0.1 at 2016-04-29 12:09:31 -0400
+
+
+Started GET "/assets/bootstrap.min.self-24a9bf4ff4e4b1e2c8dbdc54166f415004be85789fcd7bac2ba04a382176f7a1.css?body=1" for 127.0.0.1 at 2016-04-29 12:09:31 -0400
+
+
+Started GET "/assets/chatrooms.self-e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.css?body=1" for 127.0.0.1 at 2016-04-29 12:09:31 -0400
+
+
+Started GET "/assets/freelancer.self-642d34e654d4a2dbba43d8e4c6fdab3e127a2b149f3678b9be72caaf7bd240b8.css?body=1" for 127.0.0.1 at 2016-04-29 12:09:31 -0400
+
+
+Started GET "/assets/groups_users.self-e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.css?body=1" for 127.0.0.1 at 2016-04-29 12:09:31 -0400
+
+
+Started GET "/assets/posts.self-e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.css?body=1" for 127.0.0.1 at 2016-04-29 12:09:31 -0400
+
+
+Started GET "/assets/statuses.self-e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.css?body=1" for 127.0.0.1 at 2016-04-29 12:09:31 -0400
+
+
+Started GET "/assets/style.self-d1b5ca8885d0d4ef0f4210fcf8fe0689bd729c4729c6cb7410de30124395f4a0.css?body=1" for 127.0.0.1 at 2016-04-29 12:09:31 -0400
+
+
+Started GET "/assets/application.self-373a8c46449c8945d5f568717121199071937453b95a71fc07004e7d01dc1f4e.css?body=1" for 127.0.0.1 at 2016-04-29 12:09:31 -0400
+
+
+Started GET "/assets/jquery.self-660adc51e0224b731d29f575a6f1ec167ba08ad06ed5deca4f1e8654c135bf4c.js?body=1" for 127.0.0.1 at 2016-04-29 12:09:31 -0400
+
+
+Started GET "/assets/jquery_ujs.self-e87806d0cf4489aeb1bb7288016024e8de67fd18db693fe026fe3907581e53cd.js?body=1" for 127.0.0.1 at 2016-04-29 12:09:31 -0400
+
+
+Started GET "/assets/Timer/jquery.countdown.self-1e63d28cf186bd0917f1c210f138128b3a6956a725d9a41c6ee38af558737ec1.js?body=1" for 127.0.0.1 at 2016-04-29 12:09:31 -0400
+
+
+Started GET "/assets/Timer/jquery.countdown.min.self-6add0e5c2783c17b69fc9694b4fca745d7184856f78d24aea312ddcf90fb9d2d.js?body=1" for 127.0.0.1 at 2016-04-29 12:09:31 -0400
+
+
+Started GET "/assets/Timer/jquery.plugin.self-ccdc2f2a7a716655ee0e5604046dec02277fbc59252dbc59067d29582e027e58.js?body=1" for 127.0.0.1 at 2016-04-29 12:09:31 -0400
+
+
+Started GET "/assets/Timer/simple.self-9117727b02c914f1152354b2bd801b5aebfd2d463fdcbc10f4bfdef51b24a970.js?body=1" for 127.0.0.1 at 2016-04-29 12:09:31 -0400
+
+
+Started GET "/assets/application.self-7862a8a8b42407b4741a1adeeea35f0d13ddc4f702ec532adb0674491d296495.js?body=1" for 127.0.0.1 at 2016-04-29 12:09:31 -0400
+
+
+Started GET "/chatrooms/1" for 127.0.0.1 at 2016-04-29 12:09:33 -0400
+Processing by ChatroomsController#show as HTML
+  Parameters: {"authenticity_token"=>"9wavT2NVpV+SbIztCH1IRB3Y/q1CHpdwosfzZWjP8JmVZSg19WwOOT4WgKNJzzCiJeBUSXMs8FFr+82dGKk3UA==", "id"=>"1"}
+  [1m[35mChatroom Load (0.2ms)[0m  SELECT  "chatrooms".* FROM "chatrooms" WHERE "chatrooms"."id" = $1 LIMIT 1  [["id", 1]]
+  [1m[36mUser Load (0.2ms)[0m  [1mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT 1[0m  [["id", 1]]
+  Rendered chatrooms/show.html.erb within layouts/application (56.3ms)
+  Rendered layouts/_nav.html.erb (0.2ms)
+Completed 200 OK in 104ms (Views: 99.1ms | ActiveRecord: 0.4ms)
+
+
+Started GET "/assets/basic2.self-932181cc2ed62cceb6f49882fd2b757c3acacd475f3f039e2bfe48691bde8210.js?body=1" for 127.0.0.1 at 2016-04-29 12:09:33 -0400
+
+
+Started POST "/chatrooms/1?chatroom_id=1&exists=true&guest_id=1&method=post" for 127.0.0.1 at 2016-04-29 12:09:35 -0400
+Processing by ChatroomsController#destroy as HTML
+  Parameters: {"authenticity_token"=>"2D47cRWuTvPWR/V2lmnWbX8XFPOzz8Kkh0Ig0lDaV7S6XbwLg5fllXo9+TjX266LRy++F4L9pYVOfh4qILyQfQ==", "chatroom_id"=>"1", "exists"=>"true", "guest_id"=>"1", "method"=>"post", "id"=>"1"}
+  [1m[35mChatroom Load (2.1ms)[0m  SELECT  "chatrooms".* FROM "chatrooms" WHERE "chatrooms"."id" = $1 LIMIT 1  [["id", 1]]
+  [1m[36m (6.2ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.3ms)[0m  DELETE FROM "chatrooms" WHERE "chatrooms"."id" = $1  [["id", 1]]
+  [1m[36m (0.8ms)[0m  [1mCOMMIT[0m
+Redirected to http://localhost:3000/posts
+Completed 302 Found in 28ms (ActiveRecord: 9.5ms)
+
+
+Started GET "/posts" for 127.0.0.1 at 2016-04-29 12:09:35 -0400
+Processing by PostsController#index as HTML
+  [1m[35mPost Load (0.4ms)[0m  SELECT "posts".* FROM "posts"
+  [1m[36mUser Load (0.2ms)[0m  [1mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT 1[0m  [["id", 1]]
+  Rendered posts/index.html.erb within layouts/application (4.1ms)
+  Rendered layouts/_nav.html.erb (0.1ms)
+Completed 200 OK in 74ms (Views: 73.6ms | ActiveRecord: 0.6ms)
+
+
+Started GET "/posts" for 127.0.0.1 at 2016-04-29 12:10:54 -0400
+  [1m[36mActiveRecord::SchemaMigration Load (0.3ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Processing by PostsController#index as HTML
+  [1m[35mPost Load (0.7ms)[0m  SELECT "posts".* FROM "posts"
+  [1m[36mUser Load (0.4ms)[0m  [1mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT 1[0m  [["id", 1]]
+  Rendered posts/index.html.erb within layouts/application (80.2ms)
+  Rendered layouts/_nav.html.erb (0.8ms)
+Completed 200 OK in 455ms (Views: 436.5ms | ActiveRecord: 10.2ms)
+
+
+Started GET "/posts" for 127.0.0.1 at 2016-04-29 12:10:56 -0400
+Processing by PostsController#index as HTML
+  [1m[35mPost Load (0.4ms)[0m  SELECT "posts".* FROM "posts"
+  [1m[36mUser Load (0.3ms)[0m  [1mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT 1[0m  [["id", 1]]
+  Rendered posts/index.html.erb within layouts/application (7.4ms)
+  Rendered layouts/_nav.html.erb (0.1ms)
+Completed 200 OK in 126ms (Views: 125.3ms | ActiveRecord: 0.7ms)
+
+
+Started GET "/chatrooms/1" for 127.0.0.1 at 2016-04-29 12:10:58 -0400
+Processing by ChatroomsController#show as HTML
+  Parameters: {"authenticity_token"=>"u0jrX1RCGatHLXipb7ARDZIC8LFBs9BPvTLX6CqcgvDZK2wlwnuyzetXdOcuAmnrqjpaVXCBt250DukQWvpFOQ==", "id"=>"1"}
+  [1m[35mChatroom Load (0.4ms)[0m  SELECT  "chatrooms".* FROM "chatrooms" WHERE "chatrooms"."id" = $1 LIMIT 1  [["id", 1]]
+Completed 404 Not Found in 16ms (ActiveRecord: 1.8ms)
+
+ActiveRecord::RecordNotFound (Couldn't find Chatroom with 'id'=1):
+  app/controllers/chatrooms_controller.rb:55:in `set_chatroom'
+
+
+  Rendered /home/user/.rvm/gems/ruby-2.2.2/gems/actionpack-4.2.6/lib/action_dispatch/middleware/templates/rescues/_source.erb (8.4ms)
+  Rendered /home/user/.rvm/gems/ruby-2.2.2/gems/actionpack-4.2.6/lib/action_dispatch/middleware/templates/rescues/_trace.html.erb (3.6ms)
+  Rendered /home/user/.rvm/gems/ruby-2.2.2/gems/actionpack-4.2.6/lib/action_dispatch/middleware/templates/rescues/_request_and_response.html.erb (1.9ms)
+  Rendered /home/user/.rvm/gems/ruby-2.2.2/gems/actionpack-4.2.6/lib/action_dispatch/middleware/templates/rescues/diagnostics.html.erb within rescues/layout (29.2ms)
+
+
+Started GET "/" for 127.0.0.1 at 2016-04-29 12:11:08 -0400
+Processing by WelcomeController#index as HTML
+  Rendered welcome/index.html.erb within layouts/application (0.3ms)
+  [1m[36mUser Load (0.4ms)[0m  [1mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT 1[0m  [["id", 1]]
+  Rendered layouts/_nav.html.erb (1.9ms)
+Completed 200 OK in 126ms (Views: 125.7ms | ActiveRecord: 0.4ms)
+
+
+Started GET "/" for 127.0.0.1 at 2016-04-29 12:23:45 -0400
+
+ActiveRecord::NoDatabaseError (FATAL:  database "user" does not exist
+):
+  activerecord (4.2.6) lib/active_record/connection_adapters/postgresql_adapter.rb:661:in `rescue in connect'
+  activerecord (4.2.6) lib/active_record/connection_adapters/postgresql_adapter.rb:651:in `connect'
+  activerecord (4.2.6) lib/active_record/connection_adapters/postgresql_adapter.rb:242:in `initialize'
+  activerecord (4.2.6) lib/active_record/connection_adapters/postgresql_adapter.rb:44:in `new'
+  activerecord (4.2.6) lib/active_record/connection_adapters/postgresql_adapter.rb:44:in `postgresql_connection'
+  activerecord (4.2.6) lib/active_record/connection_adapters/abstract/connection_pool.rb:438:in `new_connection'
+  activerecord (4.2.6) lib/active_record/connection_adapters/abstract/connection_pool.rb:448:in `checkout_new_connection'
+  activerecord (4.2.6) lib/active_record/connection_adapters/abstract/connection_pool.rb:422:in `acquire_connection'
+  activerecord (4.2.6) lib/active_record/connection_adapters/abstract/connection_pool.rb:349:in `block in checkout'
+  /home/user/.rvm/rubies/ruby-2.2.2/lib/ruby/2.2.0/monitor.rb:211:in `mon_synchronize'
+  activerecord (4.2.6) lib/active_record/connection_adapters/abstract/connection_pool.rb:348:in `checkout'
+  activerecord (4.2.6) lib/active_record/connection_adapters/abstract/connection_pool.rb:263:in `block in connection'
+  /home/user/.rvm/rubies/ruby-2.2.2/lib/ruby/2.2.0/monitor.rb:211:in `mon_synchronize'
+  activerecord (4.2.6) lib/active_record/connection_adapters/abstract/connection_pool.rb:262:in `connection'
+  activerecord (4.2.6) lib/active_record/connection_adapters/abstract/connection_pool.rb:571:in `retrieve_connection'
+  activerecord (4.2.6) lib/active_record/connection_handling.rb:113:in `retrieve_connection'
+  activerecord (4.2.6) lib/active_record/connection_handling.rb:87:in `connection'
+  activerecord (4.2.6) lib/active_record/migration.rb:383:in `connection'
+  activerecord (4.2.6) lib/active_record/migration.rb:370:in `call'
+  actionpack (4.2.6) lib/action_dispatch/middleware/callbacks.rb:29:in `block in call'
+  activesupport (4.2.6) lib/active_support/callbacks.rb:88:in `__run_callbacks__'
+  activesupport (4.2.6) lib/active_support/callbacks.rb:778:in `_run_call_callbacks'
+  activesupport (4.2.6) lib/active_support/callbacks.rb:81:in `run_callbacks'
+  actionpack (4.2.6) lib/action_dispatch/middleware/callbacks.rb:27:in `call'
+  actionpack (4.2.6) lib/action_dispatch/middleware/reloader.rb:73:in `call'
+  actionpack (4.2.6) lib/action_dispatch/middleware/remote_ip.rb:78:in `call'
+  actionpack (4.2.6) lib/action_dispatch/middleware/debug_exceptions.rb:17:in `call'
+  actionpack (4.2.6) lib/action_dispatch/middleware/show_exceptions.rb:30:in `call'
+  railties (4.2.6) lib/rails/rack/logger.rb:38:in `call_app'
+  railties (4.2.6) lib/rails/rack/logger.rb:20:in `block in call'
+  activesupport (4.2.6) lib/active_support/tagged_logging.rb:68:in `block in tagged'
+  activesupport (4.2.6) lib/active_support/tagged_logging.rb:26:in `tagged'
+  activesupport (4.2.6) lib/active_support/tagged_logging.rb:68:in `tagged'
+  railties (4.2.6) lib/rails/rack/logger.rb:20:in `call'
+  actionpack (4.2.6) lib/action_dispatch/middleware/request_id.rb:21:in `call'
+  rack (1.6.4) lib/rack/methodoverride.rb:22:in `call'
+  rack (1.6.4) lib/rack/runtime.rb:18:in `call'
+  activesupport (4.2.6) lib/active_support/cache/strategy/local_cache_middleware.rb:28:in `call'
+  rack (1.6.4) lib/rack/lock.rb:17:in `call'
+  actionpack (4.2.6) lib/action_dispatch/middleware/static.rb:120:in `call'
+  rack (1.6.4) lib/rack/sendfile.rb:113:in `call'
+  railties (4.2.6) lib/rails/engine.rb:518:in `call'
+  railties (4.2.6) lib/rails/application.rb:165:in `call'
+  rack (1.6.4) lib/rack/lock.rb:17:in `call'
+  rack (1.6.4) lib/rack/content_length.rb:15:in `call'
+  rack (1.6.4) lib/rack/handler/webrick.rb:88:in `service'
+  /home/user/.rvm/rubies/ruby-2.2.2/lib/ruby/2.2.0/webrick/httpserver.rb:138:in `service'
+  /home/user/.rvm/rubies/ruby-2.2.2/lib/ruby/2.2.0/webrick/httpserver.rb:94:in `run'
+  /home/user/.rvm/rubies/ruby-2.2.2/lib/ruby/2.2.0/webrick/server.rb:294:in `block in start_thread'
+
+
+  Rendered /home/user/.rvm/gems/ruby-2.2.2/gems/actionpack-4.2.6/lib/action_dispatch/middleware/templates/rescues/_source.erb (5.7ms)
+  Rendered /home/user/.rvm/gems/ruby-2.2.2/gems/actionpack-4.2.6/lib/action_dispatch/middleware/templates/rescues/_trace.html.erb (2.8ms)
+  Rendered /home/user/.rvm/gems/ruby-2.2.2/gems/actionpack-4.2.6/lib/action_dispatch/middleware/templates/rescues/_request_and_response.html.erb (1.2ms)
+  Rendered /home/user/.rvm/gems/ruby-2.2.2/gems/actionpack-4.2.6/lib/action_dispatch/middleware/templates/rescues/diagnostics.html.erb within rescues/layout (29.9ms)

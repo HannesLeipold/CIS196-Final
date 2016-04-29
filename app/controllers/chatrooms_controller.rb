@@ -37,7 +37,8 @@ class ChatroomsController < ApplicationController
   # GET /chatrooms/1
   def join
     @chatroom = Chatroom.where(:user_id => params[:user_id].to_i).where(:guest_id => params[:guest_id].to_i)
-    Post.destroy(params[:post_id].to_i)
+    @post = Post.find(params[:post_id].to_i)
+    @post.destory
     params.merge(:id => @chatroom.id)
     redirect_to @chatroom
   end
