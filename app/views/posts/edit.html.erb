@@ -1,0 +1,9 @@
+<h1>Editing Post</h1>
+
+<p> The time has to be between 5 and 20 minutes </p>
+
+<% if logged_in? && @post.user_id == current_user.id %>
+  <%= render 'form' %>
+<% end %>
+<%= link_to 'Show', @post %> |
+<%= link_to 'Back', posts_path %>

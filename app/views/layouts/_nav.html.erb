@@ -1,0 +1,18 @@
+<nav class="nav-banner">
+  <ul>
+    <li><a class="nav-btn" href="/">Home</a></li>
+    <li><a class="nav-btn" href="/users">Users</a></li>
+    <li><a class="nav-btn" href="/groups">Groups</a></li>
+    <li><a class="nav-btn" href="/posts">Posts</a></li>
+    <!-- Add link to user's show page and log out button if logged in -->
+    <% if !logged_in? %>
+      <li><a class="nav-btn" href="/users/new">Sign up</a></li>
+      <li><a class="nav-btn" href="/login">Log in</a></li>
+    <!-- Add log out link otherwise -->
+    <% else %>
+      <li><a class="nav-btn" href="/users/<%= current_user.id %>"><%= current_user.name %></a></li>
+      <li><a class="nav-btn" href="/logout">Log out</a></li>
+    <% end %>
+  <ul>
+  </span>
+</nav>
