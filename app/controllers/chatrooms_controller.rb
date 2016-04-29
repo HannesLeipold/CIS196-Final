@@ -7,6 +7,7 @@ class ChatroomsController < ApplicationController
       @post = Post.find(params[:post_id])
       @post.destory
     end
+    redirect_to posts_url unless @chatroom.nil?
     # if @chatroom.visited
     #  redirect_to destory(@chatroom)
     # else
