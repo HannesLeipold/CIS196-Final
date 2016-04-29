@@ -10,7 +10,6 @@ gem 'sass-rails'
 gem 'jquery-rails'
 
 # Use sqlite3 as the database for Active Record
-gem 'sqlite3'
 
 # Use ActiveModel has_secure_password
 gem 'bcrypt'
@@ -19,6 +18,14 @@ gem 'countdown'
 
 group :development do
   gem 'pry'
+end
+
+group :development, :test do
+  gem 'sqlite3'
+end
+
+group :production do
+  gem 'pg'
 end
 
 group :test do
